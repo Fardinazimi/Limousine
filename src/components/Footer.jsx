@@ -38,7 +38,10 @@ export default function Footer() {
           <div className="col-md-4 mb-4">
             <h5 className="fw-bold">Unsere Dienstleistungen</h5>
             <ul className="list-unstyled">
-              <li>VIP Limousinen-Service</li>
+              <Link to="/account" className="btn btn-light mt-2">
+                <li>VIP Limousinen-Service</li>
+              </Link>
+
               <li>Flughafentransfers</li>
               <li>Event & Hochzeitsservice</li>
               <li>Geschäftsfahrten</li>
@@ -66,9 +69,6 @@ export default function Footer() {
             </a>
           </div>
         </div>
-        <Link to="/account" className="btn btn-light mt-2">
-          Fahrer Abrechnung
-        </Link>
       </div>
     </footer>
   );
