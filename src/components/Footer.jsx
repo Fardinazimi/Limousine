@@ -1,5 +1,6 @@
 // src/components/Footer.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -10,8 +11,9 @@ export default function Footer() {
           <div className="col-md-4 mb-4">
             <h5 className="fw-bold">Premium Mietwagen & Limousine Service</h5>
             <p>
-              Exzellenter Luxus-Transport in Hanau, Deutschland. Professionelle Fahrer,
-              luxuriöse Fahrzeuge und zuverlässiger Service rund um die Uhr.
+              Exzellenter Luxus-Transport in Hanau, Deutschland. Professionelle
+              Fahrer, luxuriöse Fahrzeuge und zuverlässiger Service rund um die
+              Uhr.
             </p>
           </div>
 
@@ -20,7 +22,8 @@ export default function Footer() {
             <h5 className="fw-bold">Kontakt</h5>
             <ul className="list-unstyled">
               <li>
-                <strong>Adresse:</strong> Lombay Straße 15 A, 63452 Hanau, Deutschland
+                <strong>Adresse:</strong> Lombay Straße 15 A, 63452 Hanau,
+                Deutschland
               </li>
               <li>
                 <strong>Telefon:</strong> +49 176 317 53301
@@ -48,14 +51,24 @@ export default function Footer() {
 
         <div className="row">
           <div className="col-md-6 text-center text-md-start mb-2 mb-md-0">
-            &copy; {new Date().getFullYear()} Premium Mietwagen & Limousine Service. Alle Rechte vorbehalten.
+            &copy; {new Date().getFullYear()} Premium Mietwagen & Limousine
+            Service. Alle Rechte vorbehalten.
           </div>
           <div className="col-md-6 text-center text-md-end">
-            <a href="#" className="text-white me-3">Datenschutz</a>
-            <a href="#" className="text-white me-3">Impressum</a>
-            <a href="#" className="text-white">AGB</a>
+            <a href="#" className="text-white me-3">
+              Datenschutz
+            </a>
+            <a href="#" className="text-white me-3">
+              Impressum
+            </a>
+            <a href="#" className="text-white">
+              AGB
+            </a>
           </div>
         </div>
+        <Link to="/account" className="btn btn-light mt-2">
+          Fahrer Abrechnung
+        </Link>
       </div>
     </footer>
   );
