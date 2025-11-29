@@ -62,9 +62,9 @@ export default function Header() {
               </>
             ) : (
               <li className="nav-item">
-                <Link className="nav-link" to="/signin">
+                {/* <Link className="nav-link" to="/signin">
                   Sign in
-                </Link>
+                </Link> */}
               </li>
             )}
           </ul>
