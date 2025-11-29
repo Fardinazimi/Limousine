@@ -1,5 +1,5 @@
 // src/config/auth.js
-export const ALLOWED_EMAIL = "fahrsercie@gmail.com"; // configured allowed email
+export const ALLOWED_EMAIL = "fahrservice@gmail.com"; // configured allowed email
 export const ALLOWED_PASSWORD = "zubair2026"; // configured allowed password
 
 export function isAuthorized() {
