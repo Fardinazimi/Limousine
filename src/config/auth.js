@@ -1,6 +1,6 @@
 // src/config/auth.js
-export const ALLOWED_EMAIL = "azimifardeen@gmail.com"; // configured allowed email
-export const ALLOWED_PASSWORD = "Far_1128557"; // configured allowed password
+export const ALLOWED_EMAIL = "fahrservice@gmail.com"; // configured allowed email
+export const ALLOWED_PASSWORD = "zubair2026"; // configured allowed password
 
 export function isAuthorized() {
   const email = (localStorage.getItem("auth_email") || "").toLowerCase();
