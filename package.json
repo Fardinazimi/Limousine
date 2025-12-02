@@ -8,7 +8,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev:vercel": "vercel dev"
+    "dev:vercel": "vercel dev",
+    "backend:install": "npm --prefix backend install",
+    "backend:dev": "npm --prefix backend run dev",
+    "backend:start": "npm --prefix backend start"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
