@@ -577,7 +577,7 @@ export default function Account() {
                     onChange={onEntryChange}
                   />
                   <label className="form-check-label">
-                    Bargeld nicht abgegeben
+                    Barzahlung im Büro erfolgt
                   </label>
                 </div>
               </div>
@@ -662,7 +662,7 @@ export default function Account() {
                         {formatCurrency(v.cash, false)}
                       </td>
                       <td className={highlight ? "fw-bold text-danger" : ""}>
-                        {r.cashHandedOver ? "Nein" : "Ja"}
+                        {r.cashHandedOver ? "Ja" : "Nein"}
                       </td>
                       <td
                         className={
