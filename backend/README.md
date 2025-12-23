@@ -70,3 +70,5 @@ Server listens on `PORT` (default 5000).
 - CORS is enabled for all origins by default. You can restrict via:
   - `app.use(cors({ origin: process.env.CORS_ORIGIN?.split(',') }))`
 - POST endpoints fully replace the resource for simplicity to match the frontend. Transition to granular updates later if needed.
+
+- check the .env file for the MONGO_URI
