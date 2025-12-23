@@ -8,10 +8,42 @@ import Drivers from './models/Drivers.js';
 import Records from './models/Records.js';
 import DriverMeta from './models/DriverMeta.js';
 
+// Load env from backend/.env first; if missing DB URI, also try project root ../.env
 dotenv.config();
+if (!process.env.MONGODB_URI && !process.env.MONGO_URI) {
+  dotenv.config({ path: '../.env' });
+}
 
 const app = express();
-app.use(cors());
+
+// CORS configuration (supports comma-separated CORS_ORIGIN)
+const originsEnv = process.env.CORS_ORIGIN || '';
+const allowedOrigins = originsEnv
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+const corsOptions = allowedOrigins.length
+  ? {
+      origin: (origin, callback) => {
+        // allow same-origin requests (no origin header)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        return callback(new Error(`CORS blocked for origin: ${origin}`));
+      },
+      methods: ['GET', 'POST', 'OPTIONS'],
+      credentials: true,
+    }
+  : {
+      origin: true, // reflect request origin if not configured
+      methods: ['GET', 'POST', 'OPTIONS'],
+      credentials: true,
+    };
+
+app.use(cors(corsOptions));
+// Preflight for API routes
+app.options('/api/*', cors(corsOptions));
+
 // HTTP request logging
 app.use(morgan('dev'));
 app.use(express.json());
@@ -114,10 +146,11 @@ app.post('/api/driverMeta', async (req, res) => {
 
 // Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+// Support both env names to avoid config mismatches
+const MONGO_URI = process.env.MONGODB_URI || process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  console.error('Missing MONGO_URI in environment');
+  console.error('Missing MONGODB_URI or MONGO_URI in environment');
   process.exit(1);
 }
 

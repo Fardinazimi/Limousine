@@ -3,6 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  getDrivers,
+  getRecords,
+  getDriverMeta,
+  saveDrivers as apiSaveDrivers,
+  saveRecords as apiSaveRecords,
+  saveDriverMeta as apiSaveDriverMeta,
+} from "../lib/api";
 
 const LS_DRIVERS = "app_drivers_v1";
 const LS_RECORDS = "app_records_v1";
@@ -62,33 +70,23 @@ export default function Account() {
     // Try to hydrate from server (MongoDB) and override local cache if available
     (async () => {
       try {
-        const [drvRes, recRes, metaRes] = await Promise.all([
-          fetch("/api/drivers"),
-          fetch("/api/records"),
-          fetch("/api/driverMeta"),
-        ]);
-        if (drvRes.ok) {
-          const { drivers: dbDrivers = [] } = await drvRes.json();
-          if (Array.isArray(dbDrivers)) {
-            setDrivers(dbDrivers);
-            localStorage.setItem(LS_DRIVERS, JSON.stringify(dbDrivers));
-            if (dbDrivers.length && !selectedDriver)
-              setSelectedDriver(dbDrivers[0]);
-          }
+        const [{ drivers: dbDrivers = [] }, { records: dbRecords = [] }, { meta: dbMeta = {} }] =
+          await Promise.all([getDrivers(), getRecords(), getDriverMeta()]);
+
+        if (Array.isArray(dbDrivers)) {
+          setDrivers(dbDrivers);
+          localStorage.setItem(LS_DRIVERS, JSON.stringify(dbDrivers));
+          if (dbDrivers.length && !selectedDriver) setSelectedDriver(dbDrivers[0]);
         }
-        if (recRes.ok) {
-          const { records: dbRecords = [] } = await recRes.json();
-          if (Array.isArray(dbRecords)) {
-            setRecords(dbRecords);
-            localStorage.setItem(LS_RECORDS, JSON.stringify(dbRecords));
-          }
+
+        if (Array.isArray(dbRecords)) {
+          setRecords(dbRecords);
+          localStorage.setItem(LS_RECORDS, JSON.stringify(dbRecords));
         }
-        if (metaRes.ok) {
-          const { meta: dbMeta = {} } = await metaRes.json();
-          if (dbMeta && typeof dbMeta === "object") {
-            setDriverMeta(dbMeta);
-            localStorage.setItem(LS_DRIVER_META, JSON.stringify(dbMeta));
-          }
+
+        if (dbMeta && typeof dbMeta === "object") {
+          setDriverMeta(dbMeta);
+          localStorage.setItem(LS_DRIVER_META, JSON.stringify(dbMeta));
         }
       } catch (e) {
         // Best-effort: stay on localStorage if API not reachable
@@ -101,31 +99,19 @@ export default function Account() {
     setDrivers(arr);
     localStorage.setItem(LS_DRIVERS, JSON.stringify(arr));
     // Fire-and-forget sync
-    fetch("/api/drivers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ drivers: arr }),
-    }).catch(() => {});
+    apiSaveDrivers(arr).catch(() => {});
   };
 
   const persistRecords = (arr) => {
     setRecords(arr);
     localStorage.setItem(LS_RECORDS, JSON.stringify(arr));
-    fetch("/api/records", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ records: arr }),
-    }).catch(() => {});
+    apiSaveRecords(arr).catch(() => {});
   };
 
   const persistDriverMeta = (meta) => {
     setDriverMeta(meta);
     localStorage.setItem(LS_DRIVER_META, JSON.stringify(meta));
-    fetch("/api/driverMeta", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ meta }),
-    }).catch(() => {});
+    apiSaveDriverMeta(meta).catch(() => {});
   };
 
   const getSelectedDriverMeta = () => {
